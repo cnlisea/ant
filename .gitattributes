@@ -1,0 +1,19 @@
+*    text=auto
+
+# go files
+*.go text eol=lf
+*.mod text eol=lf
+*.sum text eol=lf
+
+# script
+*.sh text eol=lf
+
+# database
+*.sql text eol=lf
+
+# txt
+*.md text eol=lf
+
+# git
+*.gitattributes text eol=lf
+*.gitignore text eol=lf
