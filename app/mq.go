@@ -16,14 +16,17 @@ type MQConsumerSubscribe struct {
 	Handler func(context.Context, ...*message.Consumer) bool
 }
 
-func (a *App) MQConsumerRegister(name string, nameServer []string, namespace string, groupId string, broadCastModel bool, batchSize int, subscribes []*MQConsumerSubscribe) error {
+func (a *App) MQConsumerRegister(name string, accessKey string, secretKey string, nameServer []string, namespace string, groupId string, broadCastModel bool, batchSize int, subscribes []*MQConsumerSubscribe) error {
 	subscribesLen := len(subscribes)
 	if subscribesLen == 0 {
 		return nil
 	}
 
 	ctx := a.Context()
-	client, err := mq.NewConsumerRocket(ctx, nameServer, namespace, groupId, option.ConsumerWithBroadCastModel(broadCastModel), option.ConsumerWithBatchSize(batchSize))
+	client, err := mq.NewConsumerRocket(ctx, nameServer, namespace, groupId, option.ConsumerWithBroadCastModel(broadCastModel), option.ConsumerWithBatchSize(batchSize), option.ConsumerWithAuth(&option.Auth{
+		AccessKey: accessKey,
+		SecretKey: secretKey,
+	}))
 	if err != nil {
 		return err
 	}

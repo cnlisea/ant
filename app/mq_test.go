@@ -19,7 +19,7 @@ func TestApp_MQConsumerRegister(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if err = app.MQConsumerRegister("", []string{""}, "", "GID_TEST_CONSUMER", false, 32, []*MQConsumerSubscribe{
+	if err = app.MQConsumerRegister("", "", "", []string{""}, "", "GID_TEST_CONSUMER", false, 32, []*MQConsumerSubscribe{
 		{
 			Topic: "test",
 			Tag:   "",
