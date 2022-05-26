@@ -34,8 +34,8 @@ func (a *App) NetHttpAllStart(ws *sync.WaitGroup) bool {
 		go func(name string, server *netHttp.Server) {
 			logs.Info("http server run",
 				logs.String("name", name),
-				logs.String("ip", s.Ip),
-				logs.Uint16("port", s.Port))
+				logs.String("ip", server.Ip),
+				logs.Uint16("port", server.Port))
 			if err := server.Run(); err != nil {
 				a.Close()
 				logs.Err("http server run fail", logs.String("name", name), logs.Error("err", err))
