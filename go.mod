@@ -17,7 +17,9 @@ require (
 	github.com/smallnest/rpcx v1.7.4
 	github.com/valyala/fastrand v1.1.0
 	go.mongodb.org/mongo-driver v1.9.0
+	go.uber.org/atomic v1.7.0
 	go.uber.org/zap v1.21.0
+	golang.org/x/exp v0.0.0-20220613132600-b0d781184e0d
 	gopkg.in/ini.v1 v1.66.4
 	gopkg.in/yaml.v2 v2.4.0
 )
@@ -114,7 +116,6 @@ require (
 	github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d // indirect
 	go.opentelemetry.io/otel v1.6.3 // indirect
 	go.opentelemetry.io/otel/trace v1.6.3 // indirect
-	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/crypto v0.0.0-20220408190544-5352b0902921 // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220106191415-9b9b3d81d5e3 // indirect
