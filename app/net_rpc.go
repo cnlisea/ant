@@ -55,7 +55,11 @@ func (a *App) NetRpcClient(groupName string, name string, serviceName string, op
 		f(&op)
 	}
 	if a.rpcClientProxy == nil {
-		a.rpcClientProxy = netRpc.NewClientProxy(a.ProxyDiscovery(), groupName)
+		var server *netRpc.Server
+		if a.rpcServers != nil {
+			server = a.rpcServers[name]
+		}
+		a.rpcClientProxy = netRpc.NewClientProxy(a.ProxyDiscovery(), groupName, server)
 	}
 	return a.rpcClientProxy.GetClient(a.Context(), name, serviceName, op.SelectMode)
 }

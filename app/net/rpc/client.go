@@ -12,6 +12,8 @@ import (
 )
 
 type Client struct {
+	ServerLocalProxy ServerLocalProxy
+
 	client client.XClient
 	closed bool
 	mutex  sync.RWMutex
@@ -56,7 +58,8 @@ func NewClient(discovery proxy.Discovery, name string, serviceName string, optio
 	}
 
 	return &Client{
-		client: xClient,
+		client:           xClient,
+		ServerLocalProxy: op.ServerLocalProxy,
 	}, nil
 }
 
@@ -75,10 +78,22 @@ func (c *Client) WithSoftStateKey(ctx context.Context, val string) context.Conte
 }
 
 func (c *Client) Invoke(ctx context.Context, method string, args interface{}, reply interface{}) error {
+	if c.ServerLocalProxy != nil {
+		exist, err := c.ServerLocalProxy.HandlerCall(ctx, method, args, reply)
+		if exist {
+			return err
+		}
+	}
 	return c.client.Call(ctx, method, args, reply)
 }
 
 func (c *Client) OneWay(ctx context.Context, method string, args interface{}) error {
+	if c.ServerLocalProxy != nil {
+		exist, err := c.ServerLocalProxy.HandlerCall(ctx, method, args, nil)
+		if exist {
+			return err
+		}
+	}
 	return c.client.Call(ctx, method, args, nil)
 }
 
@@ -88,6 +103,13 @@ func (c *Client) Broadcast(ctx context.Context, method string, args interface{},
 
 func (c *Client) Callback(ctx context.Context, method string, args interface{}, reply interface{}, f func(reply interface{}, err error)) {
 	go func() {
+		if c.ServerLocalProxy != nil {
+			exist, err := c.ServerLocalProxy.HandlerCall(ctx, method, args, reply)
+			if exist {
+				f(reply, err)
+				return
+			}
+		}
 		f(reply, c.client.Call(ctx, method, args, reply))
 	}()
 }

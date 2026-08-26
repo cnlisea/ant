@@ -14,16 +14,18 @@ type ClientProxy struct {
 	clients   map[string]*Client
 	lock      *sync.RWMutex
 
-	closed bool
-	mutex  sync.RWMutex
+	serverLocalProxy ServerLocalProxy
+	closed           bool
+	mutex            sync.RWMutex
 }
 
-func NewClientProxy(discovery proxy.Discovery, groupName string) *ClientProxy {
+func NewClientProxy(discovery proxy.Discovery, groupName string, serverLocalProxy ServerLocalProxy) *ClientProxy {
 	return &ClientProxy{
-		discovery: discovery,
-		groupName: groupName,
-		clients:   make(map[string]*Client),
-		lock:      new(sync.RWMutex),
+		discovery:        discovery,
+		groupName:        groupName,
+		clients:          make(map[string]*Client),
+		lock:             new(sync.RWMutex),
+		serverLocalProxy: serverLocalProxy,
 	}
 }
 
@@ -34,7 +36,7 @@ func (cp *ClientProxy) GetClient(ctx context.Context, name string, serviceName s
 	cp.lock.RUnlock()
 
 	if c == nil {
-		newClient, err := NewClient(cp.discovery, name, serviceName, ClientWithSelectMode(selectMode), ClientWithGroupName(cp.groupName))
+		newClient, err := NewClient(cp.discovery, name, serviceName, ClientWithSelectMode(selectMode), ClientWithGroupName(cp.groupName), ClientWithServerLocalProxy(cp.serverLocalProxy))
 		if err != nil {
 			return nil, err
 		}
