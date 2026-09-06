@@ -64,7 +64,7 @@ func (c *Config) Register(reg *Register) error {
 	if reg.LoadLocal {
 		err = unit.LoadLocal()
 		if err != nil {
-			return fmt.Errorf("config load local fail key: %s, name:%s, path:%s", reg.Key, reg.Name, reg.Path)
+			return fmt.Errorf("config load local fail key: %s, name:%s, path:%s, err:%s", reg.Key, reg.Name, reg.Path, err.Error())
 		}
 	}
 

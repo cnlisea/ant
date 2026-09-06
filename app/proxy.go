@@ -23,6 +23,32 @@ func (pc *ProxyConfig) GetCfg(key ...string) interface{} {
 	return pc.a.Config(k)
 }
 
+func (pc *ProxyConfig) DBMySQLRegMethod() func(name string,
+	user string, password string,
+	addr string, port uint16, dbName string,
+	charset string, connTimeout string, parseTime bool, loc string,
+	active int, idle int, idleTimeout int) error {
+	return pc.a.DBMySqlRegister
+}
+
+func (pc *ProxyConfig) DBRedisRegMethod() func(name string,
+	password string, addr string, port uint16, db int,
+	active int, idle int, idleTimeout int) error {
+	return pc.a.DBRedisRegister
+}
+
+func (pc *ProxyConfig) DBMongoRegMethod() func(name string,
+	user string, password string,
+	addr []string, dbName string,
+	replicaSet string, connTimeout int,
+	active int, idle int, idleTimeout int) error {
+	return pc.a.DBMongoRegister
+}
+
+func (pc *ProxyConfig) DiscoveryRegMethod() func(namespaceId string, nodes []*proxy.DiscoveryNode) error {
+	return pc.a.Discovery
+}
+
 func (a *App) ProxyConfig() proxy.Config {
 	return &ProxyConfig{
 		a: a,

@@ -5,18 +5,14 @@ import (
 	"sync"
 
 	netRpc "github.com/cnlisea/ant/app/net/rpc"
+	"github.com/cnlisea/ant/app/proxy"
 	"github.com/cnlisea/ant/logs"
 	"github.com/nacos-group/nacos-sdk-go/v2/clients"
 	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/v2/vo"
 )
 
-type DiscoveryNode struct {
-	Addr string
-	Port uint16
-}
-
-func (a *App) Discovery(namespaceId string, nodes []*DiscoveryNode) error {
+func (a *App) Discovery(namespaceId string, nodes []*proxy.DiscoveryNode) error {
 	var (
 		nodeLen      = len(nodes)
 		serverConfig = make([]constant.ServerConfig, nodeLen)

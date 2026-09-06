@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+	"github.com/cnlisea/ant/app/proxy"
 	"testing"
 
 	"github.com/cnlisea/ant/logs"
@@ -40,7 +41,7 @@ func TestApp_NetRpcRegister(t *testing.T) {
 		t.Fatal("logger fail", err)
 	}
 
-	if err = app.Discovery("public", []*DiscoveryNode{
+	if err = app.Discovery("public", []*proxy.DiscoveryNode{
 		{
 			Addr: "",
 			Port: 8848,
@@ -66,7 +67,7 @@ func TestApp_NetRpcRegister2(t *testing.T) {
 		t.Fatal("logger fail", err)
 	}
 
-	if err = app.Discovery("public", []*DiscoveryNode{
+	if err = app.Discovery("public", []*proxy.DiscoveryNode{
 		{
 			Addr: "",
 			Port: 8848,
@@ -92,7 +93,7 @@ func TestApp_NetRpcRegisterSoftState1(t *testing.T) {
 		t.Fatal("logger fail", err)
 	}
 
-	if err = app.Discovery("public", []*DiscoveryNode{
+	if err = app.Discovery("public", []*proxy.DiscoveryNode{
 		{
 			Addr: "",
 			Port: 8848,
@@ -120,7 +121,7 @@ func TestApp_NetRpcRegisterSoftState2(t *testing.T) {
 		t.Fatal("logger fail", err)
 	}
 
-	if err = app.Discovery("public", []*DiscoveryNode{
+	if err = app.Discovery("public", []*proxy.DiscoveryNode{
 		{
 			Addr: "",
 			Port: 8848,
@@ -148,7 +149,7 @@ func TestApp_NetRpcRegisterSoftState3(t *testing.T) {
 		t.Fatal("logger fail", err)
 	}
 
-	if err = app.Discovery("public", []*DiscoveryNode{
+	if err = app.Discovery("public", []*proxy.DiscoveryNode{
 		{
 			Addr: "",
 			Port: 8848,
@@ -175,7 +176,7 @@ func TestApp_NetRpcClient(t *testing.T) {
 	if err = app.Logger("", logs.LevelDebug, true, 0); err != nil {
 		t.Fatal("logger fail", err)
 	}
-	if err = app.Discovery("public", []*DiscoveryNode{
+	if err = app.Discovery("public", []*proxy.DiscoveryNode{
 		{
 			Addr: "",
 			Port: 8848,
@@ -208,7 +209,7 @@ func TestApp_NetRpcClientOneWay(t *testing.T) {
 	if err = app.Logger("", logs.LevelDebug, true, 0); err != nil {
 		t.Fatal("logger fail", err)
 	}
-	if err = app.Discovery("public", []*DiscoveryNode{
+	if err = app.Discovery("public", []*proxy.DiscoveryNode{
 		{
 			Addr: "",
 			Port: 8848,
@@ -237,7 +238,7 @@ func TestApp_NetRpcClientBroadcast(t *testing.T) {
 	if err = app.Logger("", logs.LevelDebug, true, 0); err != nil {
 		t.Fatal("logger fail", err)
 	}
-	if err = app.Discovery("public", []*DiscoveryNode{
+	if err = app.Discovery("public", []*proxy.DiscoveryNode{
 		{
 			Addr: "",
 			Port: 8848,
@@ -268,7 +269,7 @@ func TestApp_NetRpcClientCallback(t *testing.T) {
 	if err = app.Logger("", logs.LevelDebug, true, 0); err != nil {
 		t.Fatal("logger fail", err)
 	}
-	if err = app.Discovery("public", []*DiscoveryNode{
+	if err = app.Discovery("public", []*proxy.DiscoveryNode{
 		{
 			Addr: "",
 			Port: 8848,
@@ -303,7 +304,7 @@ func TestApp_NetRpcClientWithSoftState(t *testing.T) {
 	if err = app.Logger("", logs.LevelDebug, true, 0); err != nil {
 		t.Fatal("logger fail", err)
 	}
-	if err = app.Discovery("public", []*DiscoveryNode{
+	if err = app.Discovery("public", []*proxy.DiscoveryNode{
 		{
 			Addr: "",
 			Port: 8848,
@@ -336,7 +337,7 @@ func TestApp_NetRpcClientWithHash(t *testing.T) {
 	if err = app.Logger("", logs.LevelDebug, true, 0); err != nil {
 		t.Fatal("logger fail", err)
 	}
-	if err = app.Discovery("public", []*DiscoveryNode{
+	if err = app.Discovery("public", []*proxy.DiscoveryNode{
 		{
 			Addr: "",
 			Port: 8848,
