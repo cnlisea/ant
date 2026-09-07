@@ -1,22 +1,15 @@
 package app
 
 import (
-	"context"
 	"sync"
 
 	"github.com/cnlisea/ant/app/mq"
-	"github.com/cnlisea/ant/app/mq/message"
 	"github.com/cnlisea/ant/app/mq/option"
+	"github.com/cnlisea/ant/app/proxy"
 	"github.com/cnlisea/ant/logs"
 )
 
-type MQConsumerSubscribe struct {
-	Topic   string
-	Tag     string
-	Handler func(context.Context, ...*message.Consumer) bool
-}
-
-func (a *App) MQConsumerRegister(name string, accessKey string, secretKey string, nameServer []string, namespace string, groupId string, broadCastModel bool, batchSize int, subscribes []*MQConsumerSubscribe) error {
+func (a *App) MQConsumerRegister(name string, accessKey string, secretKey string, nameServer []string, namespace string, groupId string, broadCastModel bool, batchSize int, subscribes []*proxy.MQConsumerSubscribe) error {
 	subscribesLen := len(subscribes)
 	if subscribesLen == 0 {
 		return nil

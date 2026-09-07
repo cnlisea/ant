@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/cnlisea/ant/app/mq/message"
+	"github.com/cnlisea/ant/app/proxy"
 	"github.com/cnlisea/ant/logs"
 )
 
@@ -19,7 +20,7 @@ func TestApp_MQConsumerRegister(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if err = app.MQConsumerRegister("", "", "", []string{""}, "", "GID_TEST_CONSUMER", false, 32, []*MQConsumerSubscribe{
+	if err = app.MQConsumerRegister("", "", "", []string{""}, "", "GID_TEST_CONSUMER", false, 32, []*proxy.MQConsumerSubscribe{
 		{
 			Topic: "test",
 			Tag:   "",

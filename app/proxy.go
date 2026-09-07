@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"database/sql"
+	"net/http"
 
 	"github.com/cnlisea/ant/app/mq/message"
 	"github.com/cnlisea/ant/app/proxy"
@@ -23,6 +24,18 @@ func (pc *ProxyConfig) GetCfg(key ...string) interface{} {
 		k = key[0]
 	}
 	return pc.a.Config(k)
+}
+
+func (pc *ProxyConfig) NetHttpRegMethod() func(name string, ip string, port uint16, discoverySoftState *bool, handler http.Handler) error {
+	return pc.a.NetHttpRegister
+}
+
+func (pc *ProxyConfig) MQProducerRegMethod() func(name string, accessKey string, secretKey string, nameServer []string, namespace string, groupId string) error {
+	return pc.a.MQProducerRegister
+}
+
+func (pc *ProxyConfig) MQConsumerRegMethod() func(name string, accessKey string, secretKey string, nameServer []string, namespace string, groupId string, broadCastModel bool, batchSize int, subscribes []*proxy.MQConsumerSubscribe) error {
+	return pc.a.MQConsumerRegister
 }
 
 func (pc *ProxyConfig) DBMySQLRegMethod() func(name string,
