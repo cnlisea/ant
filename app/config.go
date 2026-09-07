@@ -35,3 +35,9 @@ func (a *App) Config(key string) interface{} {
 	}
 	return a.cfg.GetObj(key)
 }
+
+func (a *App) ConfigSet(key string, val interface{}) {
+	if a.cfg == nil {
+		a.cfg = config.New()
+	}
+}

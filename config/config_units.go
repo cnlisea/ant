@@ -60,3 +60,20 @@ func (c *Config) UnitsExist(unit *Unit, equal func(a, b *Unit) bool) bool {
 	})
 	return exist
 }
+
+func (c *Config) UnitsOverwriteAdd(unit *Unit, equal func(a, b *Unit) bool) bool {
+	var exist bool
+	c.UnitsRange(func(u *Unit) bool {
+		if equal(unit, u) {
+			exist = true
+			u.name = unit.name
+			u.path = unit.path
+			u.obj = unit.obj
+			u.Layout = unit.Layout
+			u.updateHook = unit.updateHook
+			u.sign = unit.sign
+		}
+		return !exist
+	})
+	return exist
+}

@@ -7,6 +7,7 @@ import (
 
 type Config interface {
 	GetCfg(key ...string) interface{}
+	SetCfg(key string, obj interface{})
 	DiscoveryRegMethod() func(
 		namespaceId string,
 		nodes []*DiscoveryNode) error

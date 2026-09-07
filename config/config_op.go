@@ -7,3 +7,10 @@ func (c *Config) GetObj(key string) interface{} {
 	}
 	return unit.obj
 }
+
+func (c *Config) SetObj(key string, obj interface{}) {
+	c.UnitsOverwriteAdd(&Unit{
+		key: key,
+		obj: obj,
+	}, c.UnitsEqual)
+}

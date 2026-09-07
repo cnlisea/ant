@@ -26,6 +26,10 @@ func (pc *ProxyConfig) GetCfg(key ...string) interface{} {
 	return pc.a.Config(k)
 }
 
+func (pc *ProxyConfig) SetCfg(key string, obj interface{}) {
+	pc.a.ConfigSet(key, obj)
+}
+
 func (pc *ProxyConfig) NetHttpRegMethod() func(name string, ip string, port uint16, discoverySoftState *bool, handler http.Handler) error {
 	return pc.a.NetHttpRegister
 }
