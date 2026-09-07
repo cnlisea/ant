@@ -6,6 +6,8 @@ import (
 
 	"github.com/cnlisea/ant/app/mq/message"
 	"github.com/cnlisea/ant/app/proxy"
+	"github.com/cnlisea/ant/logs"
+
 	"github.com/gomodule/redigo/redis"
 	"github.com/nacos-group/nacos-sdk-go/v2/clients/naming_client"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -47,6 +49,10 @@ func (pc *ProxyConfig) DBMongoRegMethod() func(name string,
 
 func (pc *ProxyConfig) DiscoveryRegMethod() func(namespaceId string, nodes []*proxy.DiscoveryNode) error {
 	return pc.a.Discovery
+}
+
+func (pc *ProxyConfig) LogRegMethod() func(path string, level logs.Level, json bool, callerSkip int) error {
+	return pc.a.Logger
 }
 
 func (a *App) ProxyConfig() proxy.Config {

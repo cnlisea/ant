@@ -1,5 +1,9 @@
 package proxy
 
+import (
+	"github.com/cnlisea/ant/logs"
+)
+
 type ConfigDiscoveryNode struct {
 	Addr string
 	Port uint16
@@ -21,4 +25,5 @@ type Config interface {
 	DBRedisRegMethod() func(name string,
 		password string, addr string, port uint16, db int,
 		active int, idle int, idleTimeout int) error
+	LogRegMethod() func(path string, level logs.Level, json bool, callerSkip int) error
 }
