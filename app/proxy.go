@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"net/http"
 
+	"github.com/cnlisea/ant/app/db/mysql"
 	"github.com/cnlisea/ant/app/mq/message"
 	"github.com/cnlisea/ant/app/proxy"
 	"github.com/cnlisea/ant/logs"
@@ -116,6 +117,14 @@ func (pdm *ProxyDBMySQL) GetDB(name ...string) *sql.DB {
 		return nil
 	}
 	return instance.GetConn(pdm.a.Context())
+}
+
+func (pdm *ProxyDBMySQL) GetDBTx(ctx context.Context, name ...string) *mysql.DB {
+	instance := pdm.a.DBMySqlInstance(name...)
+	if instance == nil {
+		return nil
+	}
+	return instance.GetDB(ctx)
 }
 
 func (a *App) ProxyDBMySQL() proxy.DBMySQL {

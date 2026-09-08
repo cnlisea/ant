@@ -41,6 +41,16 @@ func (c *Client) GetConn(ctx context.Context) *sql.DB {
 	return c.client
 }
 
+func (c *Client) GetDB(ctx context.Context) *DB {
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	return &DB{
+		ctx: ctx,
+		db:  c.client,
+	}
+}
+
 func (c *Client) Close(ctx context.Context) error {
 	if c.client == nil {
 		return nil
