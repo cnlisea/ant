@@ -23,6 +23,9 @@ func (db *DB) Query(query string, args ...any) (*DBRows, error) {
 		}, err
 	}
 	rows, err := tx.QueryContext(db.ctx, query, args...)
+	if err != nil {
+		db.ctx = db.TxErr(db.ctx, err)
+	}
 	return &DBRows{
 		ctx:  db.ctx,
 		Rows: rows,
@@ -56,18 +59,6 @@ func (db *DB) Exec(query string, args ...any) (*DBResult, error) {
 		ctx:    db.ctx,
 		Result: result,
 	}, err
-}
-
-func (db *DB) Close() error {
-	tx := db._TxCtx(db.ctx)
-	if tx == nil {
-		return nil
-	}
-
-	if db.TxErrVal(db.ctx) != nil {
-		return db._TxRollBack(db.ctx)
-	}
-	return db._TxCommit(db.ctx)
 }
 
 func (db *DB) Begin() (*sql.Tx, error) {
