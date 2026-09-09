@@ -7,8 +7,9 @@ import (
 )
 
 type DB struct {
-	ctx *context.Context
-	db  *sql.DB
+	ctx   *context.Context
+	db    *sql.DB
+	begin bool
 }
 
 func (db *DB) Query(query string, args ...any) (*DBRows, error) {
@@ -62,6 +63,10 @@ func (db *DB) Exec(query string, args ...any) (*DBResult, error) {
 }
 
 func (db *DB) Close(err *error) error {
+	if !db.begin {
+		return nil
+	}
+
 	ctx := *(db.ctx)
 	tx := db._TxCtx(ctx)
 	if tx == nil {
@@ -69,9 +74,9 @@ func (db *DB) Close(err *error) error {
 	}
 
 	if err != nil && *err != nil {
-		return db._TxRollBack(ctx)
+		return tx.Rollback()
 	}
-	return db._TxCommit(ctx)
+	return tx.Commit()
 }
 
 func (db *DB) Begin() (*sql.Tx, error) {

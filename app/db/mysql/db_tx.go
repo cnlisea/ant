@@ -22,6 +22,7 @@ func (db *DB) _TxBegin(ctx context.Context) (context.Context, *sql.Tx, error) {
 		if err != nil {
 			return nil, nil, err
 		}
+		db.begin = true
 		ctx = context.WithValue(ctx, DBTxCtxKey, tx)
 	}
 
@@ -44,24 +45,6 @@ func (db *DB) TxErr(ctx context.Context, err any) context.Context {
 
 func (db *DB) TxErrVal(ctx context.Context) any {
 	return ctx.Value(DBTxCtxErrKey)
-}
-
-func (db *DB) _TxCommit(ctx context.Context) error {
-	tx := db._TxCtx(ctx)
-	if tx == nil {
-		return nil
-	}
-
-	return tx.Commit()
-}
-
-func (db *DB) _TxRollBack(ctx context.Context) error {
-	tx := db._TxCtx(ctx)
-	if tx == nil {
-		return nil
-	}
-
-	return tx.Rollback()
 }
 
 func (db *DB) _TxCtx(ctx context.Context) *sql.Tx {
