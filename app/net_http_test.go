@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/cnlisea/ant/logs"
-	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5"
 )
 
 func TestApp_NetHttpRegister(t *testing.T) {

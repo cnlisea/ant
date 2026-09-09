@@ -61,6 +61,18 @@ func (db *DB) Exec(query string, args ...any) (*DBResult, error) {
 	}, err
 }
 
+func (db *DB) Close(err *error) error {
+	tx := db._TxCtx(db.ctx)
+	if tx == nil {
+		return nil
+	}
+
+	if err != nil && *err != nil {
+		return db._TxRollBack(db.ctx)
+	}
+	return db._TxCommit(db.ctx)
+}
+
 func (db *DB) Begin() (*sql.Tx, error) {
 	return nil, errors.New("Begin is not supported by this db")
 }

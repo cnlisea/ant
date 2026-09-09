@@ -3,7 +3,6 @@ package rpc
 import (
 	"context"
 	"fmt"
-	"github.com/cnlisea/ant/app/db/mysql"
 	"github.com/cnlisea/ant/typex"
 	"reflect"
 	"runtime"
@@ -25,14 +24,10 @@ type Server struct {
 }
 
 func NewServer(ip string, port uint16) *Server {
-	s := server.NewServer()
-	//plugins
-	s.Plugins.Add(new(mysql.RpcPlugin))
-
 	return &Server{
 		Ip:     ip,
 		Port:   port,
-		Server: s,
+		Server: server.NewServer(),
 	}
 }
 
