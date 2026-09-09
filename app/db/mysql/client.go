@@ -41,9 +41,13 @@ func (c *Client) GetConn(ctx context.Context) *sql.DB {
 	return c.client
 }
 
-func (c *Client) GetDB(ctx context.Context) *DB {
+func (c *Client) GetDB(ctx *context.Context) *DB {
 	if ctx == nil {
-		ctx = context.Background()
+		newCtx := context.Background()
+		ctx = &newCtx
+	}
+	if *ctx == nil {
+		*ctx = context.Background()
 	}
 	return &DB{
 		ctx: ctx,

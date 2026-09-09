@@ -7,35 +7,34 @@ import (
 )
 
 type DB struct {
-	ctx context.Context
+	ctx *context.Context
 	db  *sql.DB
 }
 
 func (db *DB) Query(query string, args ...any) (*DBRows, error) {
 	var (
+		ctx context.Context
 		tx  *sql.Tx
 		err error
 	)
-	db.ctx, tx, err = db._TxBegin(db.ctx)
+	ctx, tx, err = db._TxBegin(*(db.ctx))
 	if err != nil {
-		return &DBRows{
-			ctx: db.ctx,
-		}, err
+		return nil, err
 	}
-	rows, err := tx.QueryContext(db.ctx, query, args...)
+	*(db.ctx) = ctx
+
+	rows, err := tx.QueryContext(ctx, query, args...)
 	if err != nil {
-		db.ctx = db.TxErr(db.ctx, err)
+		return nil, err
 	}
 	return &DBRows{
-		ctx:  db.ctx,
 		Rows: rows,
-	}, err
+	}, nil
 }
 
 func (db *DB) QueryRow(query string, args ...any) *DBRow {
 	rows, err := db.Query(query, args...)
 	return &DBRow{
-		ctx:  rows.Ctx(),
 		err:  err,
 		rows: rows,
 	}
@@ -43,34 +42,36 @@ func (db *DB) QueryRow(query string, args ...any) *DBRow {
 
 func (db *DB) Exec(query string, args ...any) (*DBResult, error) {
 	var (
+		ctx context.Context
 		tx  *sql.Tx
 		err error
 	)
-	db.ctx, tx, err = db._TxBegin(db.ctx)
+	ctx, tx, err = db._TxBegin(*(db.ctx))
 	if err != nil {
-		return &DBResult{
-			ctx:    db.ctx,
-			Result: nil,
-		}, err
+		return nil, err
 	}
+	*(db.ctx) = ctx
 
-	result, err := tx.ExecContext(db.ctx, query, args...)
+	result, err := tx.ExecContext(ctx, query, args...)
+	if err != nil {
+		return nil, err
+	}
 	return &DBResult{
-		ctx:    db.ctx,
 		Result: result,
-	}, err
+	}, nil
 }
 
 func (db *DB) Close(err *error) error {
-	tx := db._TxCtx(db.ctx)
+	ctx := *(db.ctx)
+	tx := db._TxCtx(ctx)
 	if tx == nil {
 		return nil
 	}
 
 	if err != nil && *err != nil {
-		return db._TxRollBack(db.ctx)
+		return db._TxRollBack(ctx)
 	}
-	return db._TxCommit(db.ctx)
+	return db._TxCommit(ctx)
 }
 
 func (db *DB) Begin() (*sql.Tx, error) {

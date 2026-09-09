@@ -119,7 +119,7 @@ func (pdm *ProxyDBMySQL) GetDB(name ...string) *sql.DB {
 	return instance.GetConn(pdm.a.Context())
 }
 
-func (pdm *ProxyDBMySQL) GetDBTx(ctx context.Context, name ...string) *mysql.DB {
+func (pdm *ProxyDBMySQL) GetDBTx(ctx *context.Context, name ...string) *mysql.DB {
 	instance := pdm.a.DBMySqlInstance(name...)
 	if instance == nil {
 		return nil

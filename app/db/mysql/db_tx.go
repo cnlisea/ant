@@ -20,7 +20,7 @@ func (db *DB) _TxBegin(ctx context.Context) (context.Context, *sql.Tx, error) {
 	if tx == nil {
 		tx, err = db.db.Begin()
 		if err != nil {
-			return ctx, nil, err
+			return nil, nil, err
 		}
 		ctx = context.WithValue(ctx, DBTxCtxKey, tx)
 	}

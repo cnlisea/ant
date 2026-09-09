@@ -1,13 +1,11 @@
 package mysql
 
 import (
-	"context"
 	"database/sql"
 	"errors"
 )
 
 type DBRow struct {
-	ctx  context.Context
 	err  error
 	rows *DBRows
 }
@@ -40,8 +38,4 @@ func (r *DBRow) Scan(dest ...any) error {
 
 func (r *DBRow) Err() error {
 	return r.err
-}
-
-func (r *DBRow) Ctx() context.Context {
-	return r.ctx
 }

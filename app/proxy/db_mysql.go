@@ -8,5 +8,5 @@ import (
 
 type DBMySQL interface {
 	GetDB(name ...string) *sql.DB
-	GetDBTx(ctx context.Context, name ...string) *mysql.DB
+	GetDBTx(ctx *context.Context, name ...string) *mysql.DB
 }
