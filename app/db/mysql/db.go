@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+
+	"github.com/didi/gendry/scanner"
 )
 
 type DB struct {
@@ -33,6 +35,15 @@ func (db *DB) Query(query string, args ...any) (*DBRows, error) {
 	}, nil
 }
 
+func (db *DB) QueryScanClose(target any, query string, args...) error{
+	rows, err := db.Query(query, args...)
+	if err != nil {
+		return err
+	}
+
+	return scanner.ScanClose(rows, target)
+}
+
 func (db *DB) QueryRow(query string, args ...any) *DBRow {
 	rows, err := db.Query(query, args...)
 	return &DBRow{
@@ -60,6 +71,34 @@ func (db *DB) Exec(query string, args ...any) (*DBResult, error) {
 	return &DBResult{
 		Result: result,
 	}, nil
+}
+
+func (db *DB) ExecRowsAffected(query string, args ...any) (int64, error) {
+	result, err := db.Exec(query, args...)
+	if err != nil {
+		return 0, err
+	}
+
+	affected, err := result.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+
+	return affected, nil
+}
+
+func (db *DB) ExecLastInsertId(query string, args ...any) (int64, error) {
+	result, err := db.Exec(query, args...)
+	if err != nil {
+		return 0, err
+	}
+
+	lastInsertId, err := result.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+
+	return lastInsertId, nil
 }
 
 func (db *DB) Close(err *error) error {
