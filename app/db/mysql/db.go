@@ -35,7 +35,7 @@ func (db *DB) Query(query string, args ...any) (*DBRows, error) {
 	}, nil
 }
 
-func (db *DB) QueryScanClose(target any, query string, args...) error{
+func (db *DB) QueryScanClose(target any, query string, args ...any) error {
 	rows, err := db.Query(query, args...)
 	if err != nil {
 		return err
