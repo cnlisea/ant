@@ -217,3 +217,9 @@ func (a *App) ProxyDiscovery() proxy.Discovery {
 		a: a,
 	}
 }
+
+func (a *App) ProxyExt() proxy.Ext {
+	return &ProxyExt{
+		a: a,
+	}
+}

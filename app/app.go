@@ -38,6 +38,7 @@ type App struct {
 
 	mqConsumer map[string]mq.Consumer
 	mqProducer map[string]mq.Producer
+	ext        sync.Map
 }
 
 func New() *App {
