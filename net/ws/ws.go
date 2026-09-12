@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/cnlisea/ant/logs"
+	antHttp "github.com/cnlisea/ant/net/http"
 	"github.com/gorilla/websocket"
 )
 
@@ -24,6 +25,6 @@ func Handler(ctx context.Context, origin bool, heartbeatInterval int64, receive 
 			logs.Warn("up grade fail", logs.Error("err", err))
 			return
 		}
-		receive(NewConnection(ctx, wsConn, ClientIp(r), heartbeatInterval))
+		receive(NewConnection(ctx, wsConn, antHttp.ClientIp(r), heartbeatInterval))
 	}
 }
