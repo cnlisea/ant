@@ -36,7 +36,12 @@ func (cp *ClientProxy) GetClient(ctx context.Context, name string, serviceName s
 	cp.lock.RUnlock()
 
 	if c == nil {
-		newClient, err := NewClient(cp.discovery, name, serviceName, ClientWithSelectMode(selectMode), ClientWithGroupName(cp.groupName), ClientWithServerLocalProxy(cp.serverLocalProxy))
+		op := make([]ClientOptionFunc, 0, 3)
+		op = append(op, ClientWithSelectMode(selectMode), ClientWithGroupName(cp.groupName))
+		if selectMode == ClientSelectModeRoundRobin {
+			op = append(op, ClientWithServerLocalProxy(cp.serverLocalProxy))
+		}
+		newClient, err := NewClient(cp.discovery, name, serviceName, op...)
 		if err != nil {
 			return nil, err
 		}
