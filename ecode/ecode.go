@@ -3,6 +3,7 @@ package ecode
 type Code interface {
 	Error() string
 	Code() uint32
+	CodeString() string
 	Message() string
 	Equal(Code) bool
 }

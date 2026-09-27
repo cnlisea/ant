@@ -1,5 +1,7 @@
 package ecode
 
+import "strconv"
+
 type _Code struct {
 	code uint32
 	msg  string
@@ -11,6 +13,10 @@ func (s _Code) Error() string {
 
 func (s _Code) Code() uint32 {
 	return s.code
+}
+
+func (s _Code) CodeString() string {
+	return strconv.FormatUint(uint64(s.code), 10)
 }
 
 func (s _Code) Message() string {
