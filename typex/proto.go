@@ -4,10 +4,12 @@ import (
 	"github.com/gogo/protobuf/proto"
 )
 
-func ProtoMarshal(pb proto.Message) ([]byte, error) {
+type ProtoMessage = proto.Message
+
+func ProtoMarshal(pb ProtoMessage) ([]byte, error) {
 	return proto.Marshal(pb)
 }
 
-func ProtoUnmarshal(buf []byte, pb proto.Message) error {
+func ProtoUnmarshal(buf []byte, pb ProtoMessage) error {
 	return proto.Unmarshal(buf, pb)
 }
