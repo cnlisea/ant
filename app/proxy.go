@@ -7,6 +7,7 @@ import (
 
 	"github.com/cnlisea/ant/app/db/mysql"
 	"github.com/cnlisea/ant/app/mq/message"
+	"github.com/cnlisea/ant/app/net/rpc"
 	"github.com/cnlisea/ant/app/proxy"
 	"github.com/cnlisea/ant/logs"
 
@@ -94,6 +95,115 @@ func (prc *ProxyRpcClientPool) GetClientHash(name string, serviceName string) (p
 
 func (prc *ProxyRpcClientPool) GetClientSoftState(name string, serviceName string) (proxy.RpcClient, error) {
 	return prc.a.NetRpcClient(prc.groupName, name, serviceName, prc.a.NetRpcClientWithSoftState())
+}
+
+func (prc *ProxyRpcClientPool) ClientHashWithKey(ctx context.Context, val string) context.Context {
+	var c *rpc.Client
+	return c.WithHashKey(ctx, val)
+}
+
+func (prc *ProxyRpcClientPool) ClientSoftStateWithKey(ctx context.Context, val string) context.Context {
+	var c *rpc.Client
+	return c.WithSoftStateKey(ctx, val)
+}
+
+func (prc *ProxyRpcClientPool) ClientInvoke(ctx context.Context, name string, serviceName string, method string, args interface{}, reply interface{}) error {
+	c, err := prc.GetClient(name, serviceName)
+	if err != nil {
+		return err
+	}
+	return c.Invoke(ctx, method, args, reply)
+}
+
+func (prc *ProxyRpcClientPool) ClientOneWay(ctx context.Context, name string, serviceName string, method string, args interface{}) error {
+	c, err := prc.GetClient(name, serviceName)
+	if err != nil {
+		return err
+	}
+	return c.OneWay(ctx, method, args)
+}
+
+func (prc *ProxyRpcClientPool) ClientBroadcast(ctx context.Context, name string, serviceName string, method string, args interface{}, reply interface{}) error {
+	c, err := prc.GetClient(name, serviceName)
+	if err != nil {
+		return err
+	}
+	return c.Broadcast(ctx, method, args, reply)
+}
+
+func (prc *ProxyRpcClientPool) ClientCallback(ctx context.Context, name string, serviceName string, method string, args interface{}, reply interface{}, f func(reply interface{}, err error)) {
+	c, err := prc.GetClient(name, serviceName)
+	if err != nil {
+		f(nil, err)
+		return
+	}
+	c.Callback(ctx, method, args, reply, f)
+}
+
+func (prc *ProxyRpcClientPool) ClientHashInvoke(ctx context.Context, name string, serviceName string, method string, args interface{}, reply interface{}) error {
+	c, err := prc.GetClientHash(name, serviceName)
+	if err != nil {
+		return err
+	}
+	return c.Invoke(ctx, method, args, reply)
+}
+
+func (prc *ProxyRpcClientPool) ClientHashOneWay(ctx context.Context, name string, serviceName string, method string, args interface{}) error {
+	c, err := prc.GetClientHash(name, serviceName)
+	if err != nil {
+		return err
+	}
+	return c.OneWay(ctx, method, args)
+}
+
+func (prc *ProxyRpcClientPool) ClientHashBroadcast(ctx context.Context, name string, serviceName string, method string, args interface{}, reply interface{}) error {
+	c, err := prc.GetClientHash(name, serviceName)
+	if err != nil {
+		return err
+	}
+	return c.Broadcast(ctx, method, args, reply)
+}
+
+func (prc *ProxyRpcClientPool) ClientHashCallback(ctx context.Context, name string, serviceName string, method string, args interface{}, reply interface{}, f func(reply interface{}, err error)) {
+	c, err := prc.GetClientHash(name, serviceName)
+	if err != nil {
+		f(nil, err)
+		return
+	}
+	c.Callback(ctx, method, args, reply, f)
+}
+
+func (prc *ProxyRpcClientPool) ClientSoftStateInvoke(ctx context.Context, name string, serviceName string, method string, args interface{}, reply interface{}) error {
+	c, err := prc.GetClientSoftState(name, serviceName)
+	if err != nil {
+		return err
+	}
+	return c.Invoke(ctx, method, args, reply)
+}
+
+func (prc *ProxyRpcClientPool) ClientSoftStateOneWay(ctx context.Context, name string, serviceName string, method string, args interface{}) error {
+	c, err := prc.GetClientSoftState(name, serviceName)
+	if err != nil {
+		return err
+	}
+	return c.OneWay(ctx, method, args)
+}
+
+func (prc *ProxyRpcClientPool) ClientSoftStateBroadcast(ctx context.Context, name string, serviceName string, method string, args interface{}, reply interface{}) error {
+	c, err := prc.GetClientSoftState(name, serviceName)
+	if err != nil {
+		return err
+	}
+	return c.Broadcast(ctx, method, args, reply)
+}
+
+func (prc *ProxyRpcClientPool) ClientSoftStateCallback(ctx context.Context, name string, serviceName string, method string, args interface{}, reply interface{}, f func(reply interface{}, err error)) {
+	c, err := prc.GetClientSoftState(name, serviceName)
+	if err != nil {
+		f(nil, err)
+		return
+	}
+	c.Callback(ctx, method, args, reply, f)
 }
 
 func (a *App) ProxyRpcClient(groupName ...string) proxy.RpcClientPool {
