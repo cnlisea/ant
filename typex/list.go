@@ -22,6 +22,26 @@ func ListToInts(l *list.List) []int {
 	return r
 }
 
+func ListToInt32s(l *list.List) []int32 {
+	if l == nil || l.Len() == 0 {
+		return nil
+	}
+
+	var (
+		r   = make([]int32, 0, l.Len())
+		val int32
+		ok  bool
+		e   *list.Element
+	)
+	for e = l.Front(); e != nil; e = e.Next() {
+		if val, ok = e.Value.(int32); ok {
+			r = append(r, val)
+		}
+	}
+
+	return r
+}
+
 func ListToBytes(l *list.List) []byte {
 	if l == nil || l.Len() == 0 {
 		return nil
