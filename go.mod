@@ -6,6 +6,7 @@ require (
 	github.com/apache/rocketmq-client-go/v2 v2.1.2
 	github.com/cnlisea/crypto v0.0.0-20180427073832-38d271708f4a
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/didi/gendry v1.9.0
 	github.com/go-chi/chi/v5 v5.3.2
 	github.com/go-sql-driver/mysql v1.10.1
 	github.com/gomodule/redigo v1.9.3
@@ -20,7 +21,6 @@ require (
 	go.uber.org/atomic v1.11.0
 	go.uber.org/zap v1.28.0
 	golang.org/x/exp v0.0.0-20240506185415-9bf2ced13842
-	golang.org/x/net v0.47.0
 	gopkg.in/ini.v1 v1.67.0
 	gopkg.in/yaml.v2 v2.4.0
 )
@@ -122,6 +122,7 @@ require (
 	go.uber.org/multierr v1.10.0 // indirect
 	golang.org/x/crypto v0.45.0 // indirect
 	golang.org/x/mod v0.29.0 // indirect
+	golang.org/x/net v0.47.0 // indirect
 	golang.org/x/sync v0.18.0 // indirect
 	golang.org/x/sys v0.38.0 // indirect
 	golang.org/x/text v0.31.0 // indirect

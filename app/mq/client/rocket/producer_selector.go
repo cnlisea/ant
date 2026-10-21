@@ -17,16 +17,16 @@ func NewProducerHashSelector() *ProducerHashSelector {
 	}
 }
 
-func (m *ProducerHashSelector) Select(message *primitive.Message, queues []*primitive.MessageQueue) *primitive.MessageQueue {
+func (m *ProducerHashSelector) Select(message *primitive.Message, queues []*primitive.MessageQueue, lastBrokerName string) *primitive.MessageQueue {
 	v := message.GetShardingKey()
 	if v == "" {
-		return m.RoundRobin.Select(message, queues)
+		return m.RoundRobin.Select(message, queues, lastBrokerName)
 	}
 	message.RemoveProperty(primitive.PropertyShardingKey)
 
 	key, err := strconv.Atoi(v)
 	if err != nil || key < 0 {
-		return m.RoundRobin.Select(message, queues)
+		return m.RoundRobin.Select(message, queues, lastBrokerName)
 	}
 
 	return queues[key%len(queues)]
