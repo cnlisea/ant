@@ -72,7 +72,10 @@ func (s *Server) HandlerCache(handler interface{}) error {
 	s.handlerMeta = reflect.ValueOf(handler)
 	return nil
 }
+
 func (s *Server) HandlerCall(ctx context.Context, method string, args interface{}, reply interface{}) (exist bool, err error) {
+	return
+
 	m, _ := s.handlers.Load(method)
 	if m == nil {
 		return
